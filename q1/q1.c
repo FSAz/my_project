@@ -18,7 +18,10 @@ void main()
 	_ws2=0;
 	_ws1=1;
 	_ws0=1;
-	
+		
+	/* if you want watchdog in your code you must 
+	 * refresh it in while loop to ensure proper operation
+	 */
     WDT_ENABLE();
 	
     _hlclk = 1; //set system clock at FH
@@ -34,10 +37,10 @@ void main()
     _pc0 = 0;
 
     //two outputs for two LEDs
-    _pac3 = 0;  //LED1
+    _pac3 = 0;  //LED1 //pcc2?
     _pa3 = 0;
 
-    _pac4 = 0;  //LED2
+    _pac4 = 0;  //LED2 //pcc1?
     _pa4 = 0;
 
     last_zc = _pb1;
@@ -46,14 +49,14 @@ void main()
 	lastper = 626;  
 	adc_val = 0;
 	cntr = 8;
-	//TimeBase_Init();
-	_tbck = 1;   //TB_CLOCK_FSYS_DIV4
 
-	_tb02=1;  //TB0_Period_2_8
+	//time base init
+	_tbck = 1;   //TB_CLOCK_FSYS_DIV4
+	_tb02=1;  	 //TB0_Period_2_8
 	_tb01=1; 
 	_tb00=1;
 
-	//STM_Init()
+	//STM init
     _pt0m1 = 1;  //STM_TIMER_COUNTER_MODE
 	_pt0m0 = 1;
 
@@ -63,22 +66,23 @@ void main()
 
 	 _pt0cclr = 1;  //STM_CCRA_MATCH
 
-    //enable TimeBase0 interrupt
-	TB0_ISR_ENABLE();
-	
-	MF0F_CLEAR_FLAG();		//clear multi-function 0 interrupt flag
-	MF0E_ENABLE();	
 
-	STM_CLEAR_FLAG_A();		//clear STM CCRA interrupt flag
-	STM_CCRA_ISR_ENABLE();	//enable STM CCRA interrupt
+    //enable TimeBase0 interrupt
+	TB0_ISR_ENABLE();//use registers
+	
+	MF0F_CLEAR_FLAG();		//clear multi-function 0 interrupt flag //use registers
+	MF0E_ENABLE();	//use registers
+
+	STM_CLEAR_FLAG_A();		//clear STM CCRA interrupt flag //use registers
+	STM_CCRA_ISR_ENABLE();	//enable STM CCRA interrupt //use registers
 	
 	//enable global interrupt
-	EMI_ENABLE();
+	EMI_ENABLE();//use registers
 
 	//enable TimeBase IP
-	TB_ENABLE();
+	TB_ENABLE();//use registers
 
-	//ADC_Init();	
+	//ADC init	
 	//ADC_CLOCK_FSYS_DIV8
 	_sacks2 = 0;
 	_sacks1 = 1;  
@@ -93,23 +97,21 @@ void main()
     //ADC_VALUE_ALIGN_RIGHT
 	_adrfs = 1;                                          
 
-	//ADC channel select
-	//ADC_SelectChannel(ADC_CH0);
 	//clear ADC chanel
 	_sadc0 &= 0b11111000;
 
 	//selection external ADC chanel
 	_sadc0 |= adc_ch0;
 
-	_pbs0 = 1; //AN0
+	_pbs0 = 1; //AN1 //CH1 is selected in above line, so modify this
 
-	//enable ADC IP
-	ADC_ENABLE();
+	//enable ADC IP 
+	ADC_ENABLE();//use registers
 	
 	//enable ADC interrupt
-	ADC_CLEAR_ISR_FLAG();
-	ADC_ISR_ENABLE();
-	ADC_START();
+	ADC_CLEAR_ISR_FLAG();//use registers
+	ADC_ISR_ENABLE();//use registers
+	ADC_START();//use registers
 
     while(1)
     {
@@ -142,7 +144,7 @@ void main()
 		}
         
         if(_adbz == 0)
-		  ADC_START();
+		  ADC_START(); //use registers
     }
 }
 
@@ -154,15 +156,15 @@ void __attribute((interrupt(0x08))) TB0_ISR(void)
 	{
 		last_zc = _pb1;	
 		if((trig > lastper) && _pb1)
-			trig -= 10;  //Trig_Var.Step;	
+			trig -= 10;	
 						
 		else if(_pb1)
-			trig += 10;  //Trig_Var.Step;	
+			trig += 10;
 
 		_ptm0al = trig & 0x00ff;
 		_ptm0ah = trig >> 8;
 	
-		STM_ENABLE();
+		STM_ENABLE(); //use registers
 	}		
 }
 
@@ -172,17 +174,17 @@ void __attribute((interrupt(0x10))) Timer_ISR(void)
 	if(!_pc0)
 	{
 		_pc0 = 1;
-		STM_CLEAR_FLAG_A();
-		STM_DISABLE();
+		STM_CLEAR_FLAG_A(); //use registers
+		STM_DISABLE(); //use registers
 		_ptm0al = 1;
 		_ptm0ah = 0;
-		STM_ENABLE();
+		STM_ENABLE(); //use registers
 	}
 	else
 	{
 		_pc0 = 0;
-		STM_CLEAR_FLAG_A();
-		STM_DISABLE();
+		STM_CLEAR_FLAG_A(); //use registers
+		STM_DISABLE(); //use registers
 	}
 }
 
@@ -190,11 +192,11 @@ void __attribute((interrupt(0x10))) Timer_ISR(void)
 
 void __attribute((interrupt(0x18))) ADC_ISR(void)
 {
-	ADC_CLEAR_ISR_FLAG();	
+	ADC_CLEAR_ISR_FLAG();//use registers	
 	
 	if(cntr)
 	{
-		adc_val = (adc_val) + (ADC_READ_VALUE());
+		adc_val = (adc_val) + (ADC_READ_VALUE()); //use registers
 		cntr--;
 	}
 	else
