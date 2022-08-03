@@ -1,0 +1,526 @@
+				;file G:\ALTIUM\q1\q1\q1.c
+				;1	#include "HT66F004.h"
+				;2	#include "WDT.h"
+				;3	#include "TB.h"
+				;4	#include "STM.h"
+				;5	#include "inter.h"
+				;6	#include "ADC.h"
+				;7	
+				;8	static volatile unsigned int adc_val;
+				;9	static volatile unsigned char last_zc;
+				;10	static volatile unsigned int trig;
+				;11	static volatile unsigned int lastper;
+				;12	static volatile unsigned char adc_ch0 = 0x00;
+				;13	static volatile unsigned char cntr;
+				;14	
+				;15	void main()
+				;16	{
+				@code .SECTION 'CODE'
+				include HT66F004.inc
+0000	280C	jmp     _main_startup1
+0001	0000	nop
+0002	0000	nop
+0003	0000	nop
+0004	0000	nop
+0005	0000	nop
+0006	0000	nop
+0007	0000	nop
+				@dummy8 .SECTION 'CODE'
+				@start .SECTION 'CODE'
+				_main_startup1:
+				@start .SECTION 'CODE'
+000C	281C	jmp     _main
+000D	0000	nop
+000E	0000	nop
+000F	0000	nop
+				;17	    //WDT_init()
+				;18		_ws2=0;
+				@dummy24 .SECTION 'CODE'
+				_main:
+				_main:
+001C	3519	clr     WS2
+				;19		_ws1=1;
+001D	3099	set     WS1
+				;20		_ws0=1;
+001E	3019	set     WS0
+				;21		
+				;22	    WDT_ENABLE();
+001F	3799	clr     WE4
+0020	3319	set     WE3
+0021	3699	clr     WE2
+0022	3219	set     WE1
+0023	3599	clr     WE0
+				;23		
+				;24	    _hlclk = 1; //set system clock at FH
+0024	300B	set     HLCLK
+				;25	
+				;26	    //input for potentiometer
+				;27	    _pbc0 = 1;
+0025	303B	set     PBC0
+				;28	
+				;29	    //input for ZC
+				;30	    _pbc1 = 1;
+0026	30BB	set     PBC1
+				;31	
+				;32	    //output for driving the gate
+				;33	    _pcc0 = 0;
+0027	343E	clr     PCC0
+				;34	    _pc0 = 0;
+0028	343D	clr     PC0
+				;35	
+				;36	    //two outputs for two LEDs
+				;37	    _pac3 = 0;  //LED1
+0029	3595	clr     PAC3
+				;38	    _pa3 = 0;
+002A	3594	clr     PA3
+				;39	
+				;40	    _pac4 = 0;  //LED2
+002B	3615	clr     PAC4
+				;41	    _pa4 = 0;
+002C	3614	clr     PA4
+				;42	
+				;43	    last_zc = _pb1;
+002D	1F46	clr     last_zc[0]
+002E	3CBA	sz      PB1
+002F	14C6	inc     last_zc[0]
+				;44	
+				;45	    trig = 625;  //5ms time for driving triac
+0030	0F71	mov     a, 71H
+0031	00C4	mov     trig[0], a
+0032	0F02	mov     a, 2H
+0033	00C5	mov     trig[1], a
+				;46		lastper = 626;  
+0034	0F72	mov     a, 72H
+0035	00C2	mov     lastper[0], a
+0036	0F02	mov     a, 2H
+0037	00C3	mov     lastper[1], a
+				;47		adc_val = 0;
+0038	1F47	clr     adc_val[0]
+0039	1F48	clr     adc_val[1]
+				;48		cntr = 8;
+003A	0F08	mov     a, 8H
+003B	00C0	mov     cntr[0], a
+				;49		//TimeBase_Init();
+				;50		_tbck = 1;   //TB_CLOCK_FSYS_DIV4
+003C	331B	set     TBCK
+				;51	
+				;52		_tb02=1;  //TB0_Period_2_8
+003D	311B	set     TB02
+				;53		_tb01=1; 
+003E	309B	set     TB01
+				;54		_tb00=1;
+003F	301B	set     TB00
+				;55	
+				;56		//STM_Init()
+				;57	    _pt0m1 = 1;  //STM_TIMER_COUNTER_MODE
+0040	33AA	set     PT0M1
+				;58		_pt0m0 = 1;
+0041	332A	set     PT0M0
+				;59	
+				;60		_pt0ck2 = 0;  //STM_FH_DIV64
+0042	3729	clr     PT0CK2
+				;61		_pt0ck1 = 1; 
+0043	32A9	set     PT0CK1
+				;62		_pt0ck0 = 1;
+0044	3229	set     PT0CK0
+				;63	
+				;64		 _pt0cclr = 1;  //STM_CCRA_MATCH
+0045	302A	set     PT0CCLR
+				;65	
+				;66	    //enable TimeBase0 interrupt
+				;67		TB0_ISR_ENABLE();
+0046	310E	set     TB0E
+				;68		
+				;69		MF0F_CLEAR_FLAG();		//clear multi-function 0 interrupt flag
+0047	360F	clr     MF0F
+				;70		MF0E_ENABLE();	
+0048	300F	set     MF0E
+				;71	
+				;72		STM_CLEAR_FLAG_A();		//clear STM CCRA interrupt flag
+0049	3691	clr     PTMA0F
+				;73		STM_CCRA_ISR_ENABLE();	//enable STM CCRA interrupt
+004A	3091	set     PTMA0E
+				;74		
+				;75		//enable global interrupt
+				;76		EMI_ENABLE();
+004B	300E	set     EMI
+				;77	
+				;78		//enable TimeBase IP
+				;79		TB_ENABLE();
+004C	339B	set     TBON
+				;80	
+				;81		//ADC_Init();	
+				;82		//ADC_CLOCK_FSYS_DIV8
+				;83		_sacks2 = 0;
+004D	3523	clr     SACKS2
+				;84		_sacks1 = 1;  
+004E	30A3	set     SACKS1
+				;85		_sacks0 = 1;     
+004F	3023	set     SACKS0
+				;86		           	
+				;87	    //ADC_REF_VOLTAGE_VDD
+				;88		_savrs3 = 0;
+0050	35A4	clr     SAVRS3
+				;89		_savrs2 = 0;  
+0051	3524	clr     SAVRS2
+				;90		_savrs1 = 0; 
+0052	34A4	clr     SAVRS1
+				;91		_savrs0 = 0;  
+0053	3424	clr     SAVRS0
+				;92	
+				;93	    //ADC_VALUE_ALIGN_RIGHT
+				;94		_adrfs = 1;                                          
+0054	3222	set     ADRFS
+				;95	
+				;96		//ADC channel select
+				;97		//ADC_SelectChannel(ADC_CH0);
+				;98		//clear ADC chanel
+				;99		_sadc0 &= 0b11111000;
+0055	0FF8	mov     a, F8H
+0056	06A2	andm    a, SADC0
+				;100	
+				;101		//selection external ADC chanel
+				;102		_sadc0 |= adc_ch0;
+0057	0741	mov     a, adc_ch0[0]
+0058	05A2	orm     a, SADC0
+				;103	
+				;104		_pbs0 = 1; //AN0
+0059	3027	set     PBS0
+				;105	
+				;106		//enable ADC IP
+				;107		ADC_ENABLE();
+005A	32A2	set     ENADC
+				;108		
+				;109		//enable ADC interrupt
+				;110		ADC_CLEAR_ISR_FLAG();
+005B	370F	clr     ADF
+				;111		ADC_ISR_ENABLE();
+005C	310F	set     ADE
+				;112		ADC_START();
+				_L9:
+005D	37A2	clr     START
+005E	33A2	set     START
+005F	37A2	clr     START
+				;113	
+				;114	    while(1)
+				;115	    {
+				;116	        if(!cntr)
+				_L7:
+0060	10C0	sz      cntr[0]
+0061	288C	jmp     _L2
+				;117			{
+				;118				if(adc_val<1024)
+0062	0FFF	mov     a, FFH
+0063	0247	sub     a, adc_val[0]
+0064	0F03	mov     a, 3H
+0065	1248	sbc     a, adc_val[1]
+0066	380A	snz     C
+0067	286E	jmp     _L3
+				;119	            {
+				;120	               lastper = 939;
+0068	0FAB	mov     a, ABH
+0069	00C2	mov     lastper[0], a
+006A	0F03	mov     a, 3H
+006B	00C3	mov     lastper[1], a
+				;121	               _pa3 = 0;
+006C	3594	clr     PA3
+006D	2879	jmp     _L10
+				;122	               _pa4 = 0;
+				;123	            }
+				;124	            else if(adc_val<2048)
+				_L3:
+006E	0FFF	mov     a, FFH
+006F	0247	sub     a, adc_val[0]
+0070	0F07	mov     a, 7H
+0071	1248	sbc     a, adc_val[1]
+0072	380A	snz     C
+0073	287B	jmp     _L4
+				;125	            {
+				;126	                lastper =689;
+0074	0FB1	mov     a, B1H
+0075	00C2	mov     lastper[0], a
+0076	0F02	mov     a, 2H
+0077	00C3	mov     lastper[1], a
+				;127	                _pa3 = 1;
+0078	3194	set     PA3
+				;128	                _pa4 = 0;
+				_L10:
+0079	3614	clr     PA4
+007A	288C	jmp     _L2
+				;129	            }
+				;130	            else if(adc_val<3072)
+				_L4:
+007B	0FFF	mov     a, FFH
+007C	0247	sub     a, adc_val[0]
+007D	0F0B	mov     a, BH
+007E	1248	sbc     a, adc_val[1]
+007F	380A	snz     C
+0080	2887	jmp     _L5
+				;131	            {
+				;132	                lastper = 314;
+0081	0F3A	mov     a, 3AH
+0082	00C2	mov     lastper[0], a
+0083	0F01	mov     a, 1H
+0084	00C3	mov     lastper[1], a
+				;133	                _pa3 = 0;
+0085	3594	clr     PA3
+0086	288B	jmp     _L11
+				;134	                _pa4 = 1;
+				;135	            }
+				;136	            else
+				;137	            {  
+				;138	               lastper = 189;
+				_L5:
+0087	0FBD	mov     a, BDH
+0088	00C2	mov     lastper[0], a
+0089	1F43	clr     lastper[1]
+				;139	               _pa3 = 1;
+008A	3194	set     PA3
+				;140	               _pa4 = 1;
+				_L11:
+008B	3214	set     PA4
+				;141	            }
+				;142			}
+				;143	        
+				;144	        if(_adbz == 0)
+				_L2:
+008C	3F22	sz      ADBZ
+008D	2860	jmp     _L7
+008E	285D	jmp     _L9
+008F	288F	jmp     $
+				;145			  ADC_START();
+				;146	    }
+				;147	}
+				;148	
+				;149	/* 128us Time Interval For Detecting ZC and Driving Triac. */
+				;150	void __attribute((interrupt(0x08))) TB0_ISR(void)
+				;151	{
+				@TB0_ISR_code .SECTION 'CODE'
+0008	00C9	mov     r108, a
+0009	070A	mov     a, STATUS
+000A	00CA	mov     r208, a
+000B	2890	jmp     _TB0_ISR
+				;152	
+				;153		if(_pb1 ^ last_zc)
+				_TB0_ISR:
+				_TB0_ISR:
+				@dummy .SECTION 'CODE'
+0090	1F4B	clr     rd08
+0091	3CBA	sz      PB1
+0092	14CB	inc     rd08
+0093	1F4C	clr     re08
+0094	0746	mov     a, last_zc[0]
+0095	00CD	mov     rb08, a
+0096	1F4E	clr     rc08
+0097	074B	mov     a, rd08
+0098	044D	xor     a, rb08
+0099	074C	mov     a, re08
+009A	3D0A	sz      Z
+009B	044E	xor     a, rc08
+009C	3D0A	sz      Z
+009D	28C1	jmp     _L13
+				;154		{
+				;155			last_zc = _pb1;	
+009E	1F46	clr     last_zc[0]
+009F	3CBA	sz      PB1
+00A0	14C6	inc     last_zc[0]
+				;156			if((trig > lastper) && _pb1)
+00A1	0742	mov     a, lastper[0]
+00A2	0244	sub     a, trig[0]
+00A3	0743	mov     a, lastper[1]
+00A4	1245	sbc     a, trig[1]
+00A5	3C0A	sz      C
+00A6	28AE	jmp     _L15
+00A7	38BA	snz     PB1
+00A8	28AE	jmp     _L15
+				;157				trig -= 10;  //Trig_Var.Step;	
+00A9	0FF6	mov     a, F6H
+00AA	03C4	addm    a, trig[0]
+00AB	0FFF	mov     a, FFH
+00AC	13C5	adcm    a, trig[1]
+00AD	28B4	jmp     _L16
+				;158							
+				;159			else if(_pb1)
+				_L15:
+00AE	38BA	snz     PB1
+00AF	28B4	jmp     _L16
+				;160				trig += 10;  //Trig_Var.Step;	
+00B0	0F0A	mov     a, AH
+00B1	03C4	addm    a, trig[0]
+00B2	0F00	mov     a, 0H
+00B3	13C5	adcm    a, trig[1]
+				;161	
+				;162			_ptm0al = trig & 0x00ff;
+				_L16:
+00B4	0744	mov     a, trig[0]
+00B5	00CD	mov     rb08, a
+00B6	0745	mov     a, trig[1]
+00B7	00CE	mov     rc08, a
+00B8	074D	mov     a, rb08
+00B9	00AD	mov     PTM0AL, a
+				;163			_ptm0ah = trig >> 8;
+00BA	0744	mov     a, trig[0]
+00BB	00CD	mov     rb08, a
+00BC	0745	mov     a, trig[1]
+00BD	00CE	mov     rc08, a
+00BE	074E	mov     a, rc08
+00BF	00AE	mov     PTM0AH, a
+				;164		
+				;165			STM_ENABLE();
+00C0	31A9	set     PT0ON
+				_L13:
+00C1	074A	mov     a, r208
+00C2	008A	mov     STATUS, a
+00C3	0749	mov     a, r108
+00C4	0004	reti
+				;166		}		
+				;167	}
+				;168	
+				;169	//128 us
+				;170	void __attribute((interrupt(0x10))) Timer_ISR(void)
+				;171	{				
+				@Timer_ISR_code .SECTION 'CODE'
+0010	00CF	mov     r110, a
+0011	070A	mov     a, STATUS
+0012	00D0	mov     r210, a
+0013	28C5	jmp     _Timer_ISR
+				@dummy16 .SECTION 'CODE'
+0014	0000	nop
+0015	0000	nop
+0016	0000	nop
+0017	0000	nop
+				;172		if(!_pc0)
+				_Timer_ISR:
+				_Timer_ISR:
+00C5	3C3D	sz      PC0
+00C6	28CF	jmp     _L24
+				;173		{
+				;174			_pc0 = 1;
+00C7	303D	set     PC0
+				;175			STM_CLEAR_FLAG_A();
+00C8	3691	clr     PTMA0F
+				;176			STM_DISABLE();
+00C9	35A9	clr     PT0ON
+				;177			_ptm0al = 1;
+00CA	0F01	mov     a, 1H
+00CB	00AD	mov     PTM0AL, a
+				;178			_ptm0ah = 0;
+00CC	1F2E	clr     PTM0AH
+				;179			STM_ENABLE();
+00CD	31A9	set     PT0ON
+00CE	28D2	jmp     _L23
+				;180		}
+				;181		else
+				;182		{
+				;183			_pc0 = 0;
+				_L24:
+00CF	343D	clr     PC0
+				;184			STM_CLEAR_FLAG_A();
+00D0	3691	clr     PTMA0F
+				;185			STM_DISABLE();
+00D1	35A9	clr     PT0ON
+				_L23:
+00D2	0750	mov     a, r210
+00D3	008A	mov     STATUS, a
+00D4	074F	mov     a, r110
+00D5	0004	reti
+				;186		}
+				;187	}
+				;188	
+				;189	
+				;190	
+				;191	void __attribute((interrupt(0x18))) ADC_ISR(void)
+				;192	{
+				@ADC_ISR_code .SECTION 'CODE'
+0018	00D1	mov     r118, a
+0019	070A	mov     a, STATUS
+001A	00D2	mov     r218, a
+001B	28D6	jmp     _ADC_ISR
+				;193		ADC_CLEAR_ISR_FLAG();	
+				_ADC_ISR:
+				_ADC_ISR:
+00D6	370F	clr     ADF
+				;194		
+				;195		if(cntr)
+00D7	10C0	sz      cntr[0]
+00D8	28DA	jmp     _LI1
+00D9	28E5	jmp     _L27
+				;196		{
+				;197			adc_val = (adc_val) + (ADC_READ_VALUE());
+				_LI1:
+00DA	0721	mov     a, SADOH
+00DB	00D3	mov     rc18, a
+00DC	1F54	clr     rb18
+00DD	0720	mov     a, SADOL
+00DE	05D4	orm     a, rb18
+00DF	0754	mov     a, rb18
+00E0	03C7	addm    a, adc_val[0]
+00E1	0753	mov     a, rc18
+00E2	13C8	adcm    a, adc_val[1]
+				;198			cntr--;
+00E3	15C0	dec     cntr[0]
+00E4	28ED	jmp     _L26
+				;199		}
+				;200		else
+				;201		{
+				;202			cntr = 8;
+				_L27:
+00E5	0F08	mov     a, 8H
+00E6	00C0	mov     cntr[0], a
+				;203			adc_val = adc_val >> 3;
+00E7	0F03	mov     a, 3H
+				_LI2:
+00E8	340A	clr     C
+00E9	1BC8	rrc     adc_val[1]
+00EA	1BC7	rrc     adc_val[0]
+00EB	1785	sdz     ACC
+00EC	28E8	jmp     _LI2
+				_L26:
+00ED	0752	mov     a, r218
+00EE	008A	mov     STATUS, a
+00EF	0751	mov     a, r118
+00F0	0004	reti
+				;204		}
+				;205		    
+				;206	}
+				data .SECTION 'DATA'
+				__smod DB DUP (?) ; __smod
+				__intc0 DB DUP (?) ; __intc0
+				__intc1 DB DUP (?) ; __intc1
+				__mfi0 DB DUP (?) ; __mfi0
+				__pa DB DUP (?) ; __pa
+				__pac DB DUP (?) ; __pac
+				__wdtc DB DUP (?) ; __wdtc
+				__tbc DB DUP (?) ; __tbc
+				__sadol DB DUP (?) ; __sadol
+				__sadoh DB DUP (?) ; __sadoh
+				__sadc0 DB DUP (?) ; __sadc0
+				__sadc1 DB DUP (?) ; __sadc1
+				__sadc2 DB DUP (?) ; __sadc2
+				__pbsr DB DUP (?) ; __pbsr
+				__ptm0c0 DB DUP (?) ; __ptm0c0
+				__ptm0c1 DB DUP (?) ; __ptm0c1
+				__ptm0al DB DUP (?) ; __ptm0al
+				__ptm0ah DB DUP (?) ; __ptm0ah
+				__pb DB DUP (?) ; __pb
+				__pbc DB DUP (?) ; __pbc
+				__pc DB DUP (?) ; __pc
+				__pcc DB DUP (?) ; __pcc
+				cntr DB DUP (?) ; cntr
+				adc_ch0 DB DUP (?) ; adc_ch0
+				lastper DB 2 DUP (?) ; lastper
+				trig DB 2 DUP (?) ; trig
+				last_zc DB DUP (?) ; last_zc
+				adc_val DB 2 DUP (?) ; adc_val
+				r108 DB DUP (?)
+				r208 DB DUP (?)
+				rd08 DB DUP (?)
+				re08 DB DUP (?)
+				rb08 DB DUP (?)
+				rc08 DB DUP (?)
+				r110 DB DUP (?)
+				r210 DB DUP (?)
+				r118 DB DUP (?)
+				r218 DB DUP (?)
+				rc18 DB DUP (?)
+				rb18 DB DUP (?)
