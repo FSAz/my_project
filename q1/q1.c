@@ -11,10 +11,11 @@ static volatile unsigned int trig;
 static volatile unsigned int lastper;
 static volatile unsigned char adc_ch1 = 0x01;
 static volatile unsigned char cntr;
-static volatile unsigned int i = 0x0000;
+static volatile unsigned int i = 0x0000; //it's not clear
 
 void main()
 {
+	//in main function you should "initialize" and "ENABLE" watchdog and in while() you should refresh it.(not enabling it)
     //WDT_init()
 	_ws2=0;
 	_ws1=1;
@@ -55,7 +56,7 @@ void main()
 
 	//TimeBase_Init();
 	_tbck = 1;   //TB_CLOCK_FSYS_DIV4
-	_tb02=1;  //TB0_Period_2_8
+	_tb02=1;     //TB0_Period_2_8
 	_tb01=1; 
 	_tb00=1;
 
@@ -111,9 +112,11 @@ void main()
 	_adf = 0;
 	_ade = 1;
 
-	_start = 0;  //start ADC
+	//start ADC
+	_start = 0;  
 	_start = 1;
 	_start = 0;
+
     while(1)
     {
         if(!cntr)
@@ -151,9 +154,10 @@ void main()
 	      _start = 0;
 		}
 
+		//in main function you should ENABLE watchdog and in while you should refresh it.(not enabling it)
 		if(!((_we4=0) && (_we3=1) &&(_we2=0) && (_we1=1) && (_we0=0)))
 		{
-			_we4=0;  //enable WDT
+			_we4=0;  //enable WDT -> change code to refresh wdt
 			_we3=1;
 			_we2=0;
 			_we1=1;
