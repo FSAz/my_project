@@ -1,9 +1,4 @@
 #include "HT66F004.h"
-#include "WDT.h"
-#include "TB.h"
-#include "STM.h"
-#include "inter.h"
-#include "ADC.h"
 
 static volatile unsigned int adc_val;
 static volatile unsigned char last_zc;
@@ -11,11 +6,10 @@ static volatile unsigned int trig;
 static volatile unsigned int lastper;
 static volatile unsigned char adc_ch1 = 0x01;
 static volatile unsigned char cntr;
-static volatile unsigned int i = 0x0000; //it's not clear
+static volatile unsigned int i = 0x0000;  //a 16 bits integer in order to shift adc register
 
 void main()
 {
-	//in main function you should "initialize" and "ENABLE" watchdog and in while() you should refresh it.(not enabling it)
     //WDT_init()
 	_ws2=0;
 	_ws1=1;
@@ -30,11 +24,8 @@ void main()
 	
     _hlclk = 1; //set system clock at FH
 
-    //input for potentiometer
-    _pbc0 = 1;
-
     //input for ZC
-    _pbc1 = 1;
+    _pbc0 = 1;
 
     //output for driving the gate
     _pcc0 = 0;
@@ -56,15 +47,19 @@ void main()
 
 	//TimeBase_Init();
 	_tbck = 1;   //TB_CLOCK_FSYS_DIV4
-	_tb02=1;     //TB0_Period_2_8
+
+	//TB0_Period_2_8
+	_tb02=1;  
 	_tb01=1; 
 	_tb00=1;
 
 	//STM_Init()
-    _pt0m1 = 1;  //STM_TIMER_COUNTER_MODE
+	//STM_TIMER_COUNTER_MODE
+    _pt0m1 = 1;  
 	_pt0m0 = 1;
 
-	_pt0ck2 = 0;  //STM_FH_DIV64
+	//STM_FH_DIV64
+	_pt0ck2 = 0;  
 	_pt0ck1 = 1; 
 	_pt0ck0 = 1;
 
@@ -111,37 +106,36 @@ void main()
 	//enable ADC interrupt
 	_adf = 0;
 	_ade = 1;
-
-	//start ADC
+	
+    //start ADC
 	_start = 0;  
 	_start = 1;
 	_start = 0;
-
     while(1)
     {
         if(!cntr)
 		{
 			if(adc_val<1024)
             {
-               lastper = 939;
+               lastper = 939;   //fire angle on 7.5ms
                _pa3 = 0;
                _pa4 = 0;
             }
             else if(adc_val<2048)
             {
-                lastper =689;
+                lastper =689;   //fire angle on 5.5ms
                 _pa3 = 1;
                 _pa4 = 0;
             }
             else if(adc_val<3072)
             {
-                lastper = 314;
+                lastper = 439;   //fire angle on 3.5ms
                 _pa3 = 0;
                 _pa4 = 1;
             }
             else
             {  
-               lastper = 189;
+               lastper = 189;  ////fire angle on 1.5ms
                _pa3 = 1;
                _pa4 = 1;
             }
@@ -149,20 +143,13 @@ void main()
         
         if(_adbz == 0)
 		{
-		  _start = 0;  //start ADC
+		  //start ADC
+		  _start = 0;  
 	      _start = 1;
 	      _start = 0;
 		}
 
-		//in main function you should ENABLE watchdog and in while you should refresh it.(not enabling it)
-		if(!((_we4=0) && (_we3=1) &&(_we2=0) && (_we1=1) && (_we0=0)))
-		{
-			_we4=0;  //enable WDT -> change code to refresh wdt
-			_we3=1;
-			_we2=0;
-			_we1=1;
-			_we0=0;
-		}
+		_wrf = 0; //refreshing WDT
     }
 }
 
@@ -187,7 +174,6 @@ void __attribute((interrupt(0x08))) TB0_ISR(void)
 	}		
 }
 
-//128 us
 void __attribute((interrupt(0x10))) Timer_ISR(void)
 {				
 	if(!_pc0)
@@ -195,8 +181,11 @@ void __attribute((interrupt(0x10))) Timer_ISR(void)
 		_pc0 = 1;
 		_ptma0f = 0;  //clear timer flag
 		_pt0on  = 0;  //disable the timer
-		_ptm0al = 1;
+
+		//make a narrow pulse
+		_ptm0al = 4;
 		_ptm0ah = 0;
+
 		_pt0on  = 1;  //enable the timer
 	}
 	else
@@ -223,5 +212,4 @@ void __attribute((interrupt(0x18))) ADC_ISR(void)
 		cntr = 8;
 		adc_val = adc_val >> 3;
 	}
-	    
 }
