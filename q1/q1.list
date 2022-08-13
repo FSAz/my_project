@@ -292,24 +292,25 @@
 00B4	37A2	clr     START
 				;150			}
 				;151	
-				;152			_wrf = 0; //refreshing WDT
+				;152		    //refreshing WDT 
+				;153	        asm("CLR WDT");	
 				_L6:
-00B5	341C	clr     WRF
-				;153	    }
+00B5	0001	clr     wdt
+				;154	    }
 00B6	2884	jmp     _L7
 00B7	28B7	jmp     $
-				;154	}
-				;155	
-				;156	/* 128us Time Interval For Detecting ZC and Driving Triac. */
-				;157	void __attribute((interrupt(0x08))) TB0_ISR(void)
-				;158	{
+				;155	}
+				;156	
+				;157	/* 128us Time Interval For Detecting ZC and Driving Triac. */
+				;158	void __attribute((interrupt(0x08))) TB0_ISR(void)
+				;159	{
 				@TB0_ISR_code .SECTION 'CODE'
 0008	00CC	mov     r108, a
 0009	070A	mov     a, STATUS
 000A	00CD	mov     r208, a
 000B	28B8	jmp     _TB0_ISR
-				;159	
-				;160		if(_pb1 ^ last_zc)
+				;160	
+				;161		if(_pb1 ^ last_zc)
 				_TB0_ISR:
 				_TB0_ISR:
 				@dummy .SECTION 'CODE'
@@ -326,179 +327,176 @@
 00C2	3D0A	sz      Z
 00C3	0451	xor     a, rc08
 00C4	3D0A	sz      Z
-00C5	28EA	jmp     _L11
-				;161		{
-				;162			_tb0f = 0;  //clear TB0 flag
-00C6	368E	clr     TB0F
-				;163			last_zc = _pb1;	
-00C7	1F47	clr     last_zc[0]
-00C8	3CBA	sz      PB1
-00C9	14C7	inc     last_zc[0]
-				;164			if((trig > lastper) && _pb1)
-00CA	0743	mov     a, lastper[0]
-00CB	0245	sub     a, trig[0]
-00CC	0744	mov     a, lastper[1]
-00CD	1246	sbc     a, trig[1]
-00CE	3C0A	sz      C
-00CF	28D7	jmp     _L13
-00D0	38BA	snz     PB1
-00D1	28D7	jmp     _L13
-				;165				trig -= 10;  //Trig_Var.Step;	
-00D2	0FF6	mov     a, F6H
-00D3	03C5	addm    a, trig[0]
-00D4	0FFF	mov     a, FFH
-00D5	13C6	adcm    a, trig[1]
-00D6	28DD	jmp     _L14
-				;166							
-				;167			else if(_pb1)
+00C5	28E9	jmp     _L11
+				;162		{
+				;163			//_tb0f = 0;(clear TB0 flag) it automatcally happens
+				;164			last_zc = _pb1;	
+00C6	1F47	clr     last_zc[0]
+00C7	3CBA	sz      PB1
+00C8	14C7	inc     last_zc[0]
+				;165			if((trig > lastper) && _pb1)
+00C9	0743	mov     a, lastper[0]
+00CA	0245	sub     a, trig[0]
+00CB	0744	mov     a, lastper[1]
+00CC	1246	sbc     a, trig[1]
+00CD	3C0A	sz      C
+00CE	28D6	jmp     _L13
+00CF	38BA	snz     PB1
+00D0	28D6	jmp     _L13
+				;166				trig -= 10;  //Trig_Var.Step;	
+00D1	0FF6	mov     a, F6H
+00D2	03C5	addm    a, trig[0]
+00D3	0FFF	mov     a, FFH
+00D4	13C6	adcm    a, trig[1]
+00D5	28DC	jmp     _L14
+				;167							
+				;168			else if(_pb1)
 				_L13:
-00D7	38BA	snz     PB1
-00D8	28DD	jmp     _L14
-				;168				trig += 10;  //Trig_Var.Step;	
-00D9	0F0A	mov     a, AH
-00DA	03C5	addm    a, trig[0]
-00DB	0F00	mov     a, 0H
-00DC	13C6	adcm    a, trig[1]
-				;169	
-				;170			_ptm0al = trig & 0x00ff;
+00D6	38BA	snz     PB1
+00D7	28DC	jmp     _L14
+				;169				trig += 10;  //Trig_Var.Step;	
+00D8	0F0A	mov     a, AH
+00D9	03C5	addm    a, trig[0]
+00DA	0F00	mov     a, 0H
+00DB	13C6	adcm    a, trig[1]
+				;170	
+				;171			_ptm0al = trig & 0x00ff;
 				_L14:
-00DD	0745	mov     a, trig[0]
-00DE	00D0	mov     rb08, a
-00DF	0746	mov     a, trig[1]
-00E0	00D1	mov     rc08, a
-00E1	0750	mov     a, rb08
-00E2	00AD	mov     PTM0AL, a
-				;171			_ptm0ah = trig >> 8;
-00E3	0745	mov     a, trig[0]
-00E4	00D0	mov     rb08, a
-00E5	0746	mov     a, trig[1]
-00E6	00D1	mov     rc08, a
-00E7	0751	mov     a, rc08
-00E8	00AE	mov     PTM0AH, a
-				;172		
-				;173			_pt0on = 1;  //enable STM
-00E9	31A9	set     PT0ON
+00DC	0745	mov     a, trig[0]
+00DD	00D0	mov     rb08, a
+00DE	0746	mov     a, trig[1]
+00DF	00D1	mov     rc08, a
+00E0	0750	mov     a, rb08
+00E1	00AD	mov     PTM0AL, a
+				;172			_ptm0ah = trig >> 8;
+00E2	0745	mov     a, trig[0]
+00E3	00D0	mov     rb08, a
+00E4	0746	mov     a, trig[1]
+00E5	00D1	mov     rc08, a
+00E6	0751	mov     a, rc08
+00E7	00AE	mov     PTM0AH, a
+				;173		
+				;174			_pt0on = 1;  //enable STM
+00E8	31A9	set     PT0ON
 				_L11:
-00EA	074D	mov     a, r208
-00EB	008A	mov     STATUS, a
-00EC	074C	mov     a, r108
-00ED	0004	reti
-				;174		}		
-				;175	}
-				;176	
-				;177	void __attribute((interrupt(0x10))) Timer_ISR(void)
-				;178	{				
+00E9	074D	mov     a, r208
+00EA	008A	mov     STATUS, a
+00EB	074C	mov     a, r108
+00EC	0004	reti
+				;175		}		
+				;176	}
+				;177	
+				;178	void __attribute((interrupt(0x10))) Timer_ISR(void)
+				;179	{				
 				@Timer_ISR_code .SECTION 'CODE'
 0010	00D2	mov     r110, a
 0011	070A	mov     a, STATUS
 0012	00D3	mov     r210, a
-0013	28EE	jmp     _Timer_ISR
+0013	28ED	jmp     _Timer_ISR
 				@dummy16 .SECTION 'CODE'
 0014	0000	nop
 0015	0000	nop
 0016	0000	nop
 0017	0000	nop
-				;179		if(!_pc0)
+				;180		if(!_pc0)
 				_Timer_ISR:
 				_Timer_ISR:
-00EE	3C3D	sz      PC0
-00EF	28F8	jmp     _L22
-				;180		{
-				;181			_pc0 = 1;
-00F0	303D	set     PC0
-				;182			_ptma0f = 0;  //clear timer flag
-00F1	3691	clr     PTMA0F
-				;183			_pt0on  = 0;  //disable the timer
-00F2	35A9	clr     PT0ON
-				;184	
-				;185			//make a narrow pulse
-				;186			_ptm0al = 4;
-00F3	0F04	mov     a, 4H
-00F4	00AD	mov     PTM0AL, a
-				;187			_ptm0ah = 0;
-00F5	1F2E	clr     PTM0AH
-				;188	
-				;189			_pt0on  = 1;  //enable the timer
-00F6	31A9	set     PT0ON
-00F7	28FB	jmp     _L21
-				;190		}
-				;191		else
-				;192		{
-				;193			_pc0 = 0;
+00ED	3C3D	sz      PC0
+00EE	28F7	jmp     _L22
+				;181		{
+				;182			_pc0 = 1;
+00EF	303D	set     PC0
+				;183			_ptma0f = 0;  //clear timer flag
+00F0	3691	clr     PTMA0F
+				;184			_pt0on  = 0;  //disable the timer
+00F1	35A9	clr     PT0ON
+				;185	
+				;186			//make a narrow pulse
+				;187			_ptm0al = 4;
+00F2	0F04	mov     a, 4H
+00F3	00AD	mov     PTM0AL, a
+				;188			_ptm0ah = 0;
+00F4	1F2E	clr     PTM0AH
+				;189	
+				;190			_pt0on  = 1;  //enable the timer
+00F5	31A9	set     PT0ON
+00F6	28FA	jmp     _L21
+				;191		}
+				;192		else
+				;193		{
+				;194			_pc0 = 0;
 				_L22:
-00F8	343D	clr     PC0
-				;194			_ptma0f = 0; 
-00F9	3691	clr     PTMA0F
-				;195			_pt0on  = 0;
-00FA	35A9	clr     PT0ON
+00F7	343D	clr     PC0
+				;195			_ptma0f = 0; 
+00F8	3691	clr     PTMA0F
+				;196			_pt0on  = 0;
+00F9	35A9	clr     PT0ON
 				_L21:
-00FB	0753	mov     a, r210
-00FC	008A	mov     STATUS, a
-00FD	0752	mov     a, r110
-00FE	0004	reti
-				;196		}
-				;197	}
-				;198	
+00FA	0753	mov     a, r210
+00FB	008A	mov     STATUS, a
+00FC	0752	mov     a, r110
+00FD	0004	reti
+				;197		}
+				;198	}
 				;199	
 				;200	
-				;201	void __attribute((interrupt(0x18))) ADC_ISR(void)
-				;202	{
+				;201	
+				;202	void __attribute((interrupt(0x18))) ADC_ISR(void)
+				;203	{
 				@ADC_ISR_code .SECTION 'CODE'
 0018	00D4	mov     r118, a
 0019	070A	mov     a, STATUS
 001A	00D5	mov     r218, a
-001B	28FF	jmp     _ADC_ISR
-				;203		_adf = 0;	//clear adc flag
+001B	28FE	jmp     _ADC_ISR
+				;204		//_adf = 0;(clear adc flag) it automatcally happens
+				;205		
+				;206		if(cntr)
 				_ADC_ISR:
 				_ADC_ISR:
-00FF	370F	clr     ADF
-				;204		
-				;205		if(cntr)
-0100	10C2	sz      cntr[0]
-0101	2903	jmp     _LI1
-0102	2913	jmp     _L25
-				;206		{
-				;207			adc_val = (adc_val) + (((i | _sadoh)<<8) | _sadol);
+00FE	10C2	sz      cntr[0]
+00FF	2901	jmp     _LI1
+0100	2911	jmp     _L25
+				;207		{
+				;208			adc_val = (adc_val) + (((i | _sadoh)<<8) | _sadol);
 				_LI1:
-0103	0741	mov     a, i[1]
-0104	00D6	mov     rc18, a
-0105	0721	mov     a, SADOH
-0106	0540	or      a, i[0]
-0107	00D7	mov     rb18, a
-0108	0757	mov     a, rb18
-0109	00D6	mov     rc18, a
-010A	1F57	clr     rb18
-010B	0720	mov     a, SADOL
-010C	05D7	orm     a, rb18
-010D	0757	mov     a, rb18
-010E	03C8	addm    a, adc_val[0]
-010F	0756	mov     a, rc18
-0110	13C9	adcm    a, adc_val[1]
-				;208			cntr--;
-0111	15C2	dec     cntr[0]
-0112	291B	jmp     _L24
-				;209		}
-				;210		else
-				;211		{
-				;212			cntr = 8;
+0101	0741	mov     a, i[1]
+0102	00D6	mov     rc18, a
+0103	0721	mov     a, SADOH
+0104	0540	or      a, i[0]
+0105	00D7	mov     rb18, a
+0106	0757	mov     a, rb18
+0107	00D6	mov     rc18, a
+0108	1F57	clr     rb18
+0109	0720	mov     a, SADOL
+010A	05D7	orm     a, rb18
+010B	0757	mov     a, rb18
+010C	03C8	addm    a, adc_val[0]
+010D	0756	mov     a, rc18
+010E	13C9	adcm    a, adc_val[1]
+				;209			cntr--;
+010F	15C2	dec     cntr[0]
+0110	2919	jmp     _L24
+				;210		}
+				;211		else
+				;212		{
+				;213			cntr = 8;
 				_L25:
-0113	0F08	mov     a, 8H
-0114	00C2	mov     cntr[0], a
-				;213			adc_val = adc_val >> 3;
-0115	0F03	mov     a, 3H
+0111	0F08	mov     a, 8H
+0112	00C2	mov     cntr[0], a
+				;214			adc_val = adc_val >> 3;
+0113	0F03	mov     a, 3H
 				_LI2:
-0116	340A	clr     C
-0117	1BC9	rrc     adc_val[1]
-0118	1BC8	rrc     adc_val[0]
-0119	1785	sdz     ACC
-011A	2916	jmp     _LI2
+0114	340A	clr     C
+0115	1BC9	rrc     adc_val[1]
+0116	1BC8	rrc     adc_val[0]
+0117	1785	sdz     ACC
+0118	2914	jmp     _LI2
 				_L24:
-011B	0755	mov     a, r218
-011C	008A	mov     STATUS, a
-011D	0754	mov     a, r118
-011E	0004	reti
-				;214		}
-				;215		    
+0119	0755	mov     a, r218
+011A	008A	mov     STATUS, a
+011B	0754	mov     a, r118
+011C	0004	reti
+				;215		}
 				;216	}
 				;file G:\ALTIUM\q1\q1\startup1.asm
 				;1	;;--------------------------------------------------------------;;
@@ -649,7 +647,6 @@
 				__pa DB DUP (?) ; __pa
 				__wdtc DB DUP (?) ; __wdtc
 				__tbc DB DUP (?) ; __tbc
-				__smod1 DB DUP (?) ; __smod1
 				__sadol DB DUP (?) ; __sadol
 				__sadoh DB DUP (?) ; __sadoh
 				__sadc0 DB DUP (?) ; __sadc0

@@ -149,7 +149,8 @@ void main()
 	      _start = 0;
 		}
 
-		_wrf = 0; //refreshing WDT
+	    //refreshing WDT 
+        asm("CLR WDT");	
     }
 }
 
@@ -159,7 +160,7 @@ void __attribute((interrupt(0x08))) TB0_ISR(void)
 
 	if(_pb1 ^ last_zc)
 	{
-		_tb0f = 0;  //clear TB0 flag
+		//_tb0f = 0;(clear TB0 flag) it automatcally happens
 		last_zc = _pb1;	
 		if((trig > lastper) && _pb1)
 			trig -= 10;  //Trig_Var.Step;	
@@ -200,7 +201,7 @@ void __attribute((interrupt(0x10))) Timer_ISR(void)
 
 void __attribute((interrupt(0x18))) ADC_ISR(void)
 {
-	_adf = 0;	//clear adc flag
+	//_adf = 0;(clear adc flag) it automatcally happens
 	
 	if(cntr)
 	{

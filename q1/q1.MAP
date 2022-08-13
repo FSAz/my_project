@@ -15,9 +15,9 @@ Input Library File: C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V7.x
      00h     0018h     001bh    0004h      CODE               @ADC_ISR_code (G:\ALTIUM\q1\q1\Q1.OBJ)
      00h     001ch     0040h    0025h      CODE               @start (G:\ALTIUM\q1\q1\Q1.OBJ)
      00h     0041h     00b7h    0077h      CODE               _main (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     00b8h     00edh    0036h      CODE               _TB0_ISR (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     00eeh     00feh    0011h      CODE               _Timer_ISR (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     00ffh     011eh    0020h      CODE               _ADC_ISR (G:\ALTIUM\q1\q1\Q1.OBJ)
+     00h     00b8h     00ech    0035h      CODE               _TB0_ISR (G:\ALTIUM\q1\q1\Q1.OBJ)
+     00h     00edh     00fdh    0011h      CODE               _Timer_ISR (G:\ALTIUM\q1\q1\Q1.OBJ)
+     00h     00feh     011ch    001fh      CODE               _ADC_ISR (G:\ALTIUM\q1\q1\Q1.OBJ)
      00h     0040h     0049h    000ah      DATA     4.8       @HCCINIT0 (G:\ALTIUM\q1\q1\Q1.OBJ)
      00h     004ah     004ah    0001h      DATA     0         @HCCINIT (G:\ALTIUM\q1\q1\STARTUP1.OBJ)
      00h     004bh     004bh    0001h      DATA     3         @data_ra (C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V7.x\LIB\LIBHOLTEKGCC.LIB)
@@ -48,9 +48,9 @@ Input Library File: C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V7.x
 
      Public Symbols Information
      Address            Public by Name
-     00ffh              _ADC_ISR
+     00feh              _ADC_ISR
      00b8h              _TB0_ISR
-     00eeh              _Timer_ISR
+     00edh              _Timer_ISR
      0041h              _main
      001ch              _main_startup
      004ch              r108
@@ -84,13 +84,13 @@ Input Library File: C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V7.x
      0056h              rc18
      0057h              rb18
      00b8h              _TB0_ISR
-     00eeh              _Timer_ISR
-     00ffh              _ADC_ISR
+     00edh              _Timer_ISR
+     00feh              _ADC_ISR
 
 
 ROM Usage Statistics
      Size      Used     Percentage
-     0800h     0112h    13%
+     0800h     0110h    13%
 
 RAM Usage Statistics
     Bank      Size      Used     Percentage
