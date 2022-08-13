@@ -1,101 +1,117 @@
 
-Linker Version 8.7.5.171218
-Input Object File: G:\ALTIUM\q1\q1\Q1.OBJ
-Input Object File: G:\ALTIUM\q1\q1\STARTUP1.OBJ
+Linker Version 8.7.7.190806
+Input Object File: C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ
+Input Object File: C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\STARTUP1.OBJ
 
-Input Library File: C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V7.x\LIB\LIBHOLTEKGCC.LIB
-Input Library File: C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V7.x\LIB\v3_mrsc.lib
+Input Library File: C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V8.x\LIB\LIBHOLTEKGCC.LIB
+Input Library File: C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V8.x\LIB\v3_mrsc.lib
 
 
      Bank    Start     End      Length     Class    AvgIns    Name
-     00h     0000h     0000h    0001h      CODE               @code (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     0008h     000bh    0004h      CODE               @TB0_ISR_code (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     000ch     000dh    0002h      CODE               @ROMDATA_BASE (G:\ALTIUM\q1\q1\STARTUP1.OBJ)
-     00h     0010h     0013h    0004h      CODE               @Timer_ISR_code (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     0018h     001bh    0004h      CODE               @ADC_ISR_code (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     001ch     0040h    0025h      CODE               @start (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     0041h     00b7h    0077h      CODE               _main (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     00b8h     00ech    0035h      CODE               _TB0_ISR (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     00edh     00fdh    0011h      CODE               _Timer_ISR (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     00feh     011ch    001fh      CODE               _ADC_ISR (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     0040h     0049h    000ah      DATA     4.8       @HCCINIT0 (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     004ah     004ah    0001h      DATA     0         @HCCINIT (G:\ALTIUM\q1\q1\STARTUP1.OBJ)
-     00h     004bh     004bh    0001h      DATA     3         @data_ra (C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V7.x\LIB\LIBHOLTEKGCC.LIB)
-     00h     004ch     004ch    0001h      DATA     2         @data_r108 (isr:ra~rh)
-     00h     004dh     004dh    0001h      DATA     2         @data_r208 (isr:ra~rh)
-     00h     004eh     004eh    0001h      DATA     3         @data_rd08 (isr:ra~rh)
-     00h     004fh     004fh    0001h      DATA     2         @data_re08 (isr:ra~rh)
-     00h     0050h     0050h    0001h      DATA     5         @data_rb08 (isr:ra~rh)
-     00h     0051h     0051h    0001h      DATA     5         @data_rc08 (isr:ra~rh)
-     00h     0052h     0052h    0001h      DATA     2         @data_r110 (isr:ra~rh)
-     00h     0053h     0053h    0001h      DATA     2         @data_r210 (isr:ra~rh)
-     00h     0054h     0054h    0001h      DATA     2         @data_r118 (isr:ra~rh)
-     00h     0055h     0055h    0001h      DATA     2         @data_r218 (isr:ra~rh)
-     00h     0056h     0056h    0001h      DATA     3         @data_rc18 (isr:ra~rh)
-     00h     0057h     0057h    0001h      DATA     5         @data_rb18 (isr:ra~rh)
+     00h     0000h     0000h    0001h      CODE               @code (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ)
+     00h     0001h     0005h    0005h      CODE               _ADC_ISR (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ)
+     00h     0008h     000bh    0004h      CODE               @TB0_ISR_code (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ)
+     00h     000ch     000fh    0004h      CODE               @ROMDATA_BASE (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\STARTUP1.OBJ)
+     00h     0010h     0013h    0004h      CODE               @Timer_ISR_code (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ)
+     00h     0018h     001bh    0004h      CODE               @ADC_ISR_code (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ)
+     00h     001ch     0040h    0025h      CODE               @start (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ)
+     00h     0041h     00abh    006bh      CODE               _main (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ)
+     00h     00ach     0111h    0066h      CODE               _TB0_ISR (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ)
+     00h     0112h     0122h    0011h      CODE               _Timer_ISR (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ)
+     00h     0040h     004bh    000ch      DATA     4.6667    @HCCINIT0 (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ)
+     00h     004ch     004eh    0003h      DATA     0         @HCCINIT (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\STARTUP1.OBJ)
+     00h     004fh     004fh    0001h      DATA     3         @data_ra (C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V8.x\LIB\LIBHOLTEKGCC.LIB)
+     00h     0050h     0050h    0001h      DATA     2         @data_r108 (isr:ra~rh)
+     00h     0051h     0051h    0001h      DATA     2         @data_r208 (isr:ra~rh)
+     00h     0052h     0052h    0001h      DATA     5         @data_rd08 (isr:ra~rh)
+     00h     0053h     0053h    0001h      DATA     5         @data_re08 (isr:ra~rh)
+     00h     0054h     0054h    0001h      DATA     8         @data_rb08 (isr:ra~rh)
+     00h     0055h     0055h    0001h      DATA     7         @data_rc08 (isr:ra~rh)
+     00h     0056h     0056h    0001h      DATA     2         @data_rf08 (isr:ra~rh)
+     00h     0057h     0057h    0001h      DATA     2         @data_rg08 (isr:ra~rh)
+     00h     0058h     0058h    0001h      DATA     2         @data_r110 (isr:ra~rh)
+     00h     0059h     0059h    0001h      DATA     2         @data_r210 (isr:ra~rh)
+     00h     005ah     005ah    0001h      DATA     2         @data_r118 (isr:ra~rh)
+     00h     005bh     005bh    0001h      DATA     2         @data_r218 (isr:ra~rh)
 
      Local Sections
 
      Bank    Start     End      Length     Class    AvgIns    Name
-     00h     0058h     0058h    0000h      LOCAL    0         @dummy (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     0058h     0058h    0000h      LOCAL    0         _main (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     0058h     0058h    0000h      LOCAL    0         @dummy8 (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     0058h     0058h    0000h      LOCAL    0         _TB0_ISR (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     0058h     0058h    0000h      LOCAL    0         @dummy16 (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     0058h     0058h    0000h      LOCAL    0         _Timer_ISR (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     0058h     0058h    0000h      LOCAL    0         @dummy24 (G:\ALTIUM\q1\q1\Q1.OBJ)
-     00h     0058h     0058h    0000h      LOCAL    0         _ADC_ISR (G:\ALTIUM\q1\q1\Q1.OBJ)
+     00h     005ch     005ch    0000h      LOCAL    0         @dummy (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ)
+     00h     005ch     005ch    0000h      LOCAL    0         _main (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ)
+     00h     005ch     005ch    0000h      LOCAL    0         @dummy8 (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ)
+     00h     005ch     005ch    0000h      LOCAL    0         _TB0_ISR (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ)
+     00h     005ch     005ch    0000h      LOCAL    0         @dummy16 (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ)
+     00h     005ch     005ch    0000h      LOCAL    0         _Timer_ISR (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ)
+     00h     005ch     005ch    0000h      LOCAL    0         @dummy24 (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ)
+     00h     005ch     005ch    0000h      LOCAL    0         _ADC_ISR (C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ)
 
      Public Symbols Information
      Address            Public by Name
-     00feh              _ADC_ISR
-     00b8h              _TB0_ISR
-     00edh              _Timer_ISR
+     0001h              _ADC_ISR
+     00ach              _TB0_ISR
+     0112h              _Timer_ISR
+     0046h              _adc_avg
+     004eh              _adc_ch1
+     0048h              _adc_val
+     0040h              _cntr
+     004ch              _i
+     0045h              _last_zc
+     0041h              _lastper
      0041h              _main
      001ch              _main_startup
-     004ch              r108
-     0052h              r110
-     0054h              r118
-     004dh              r208
-     0053h              r210
-     0055h              r218
-     004bh              ra
-     0050h              rb08
-     0057h              rb18
-     0051h              rc08
-     0056h              rc18
-     004eh              rd08
-     004fh              re08
+     0043h              _trig
+     0050h              r108
+     0058h              r110
+     005ah              r118
+     0051h              r208
+     0059h              r210
+     005bh              r218
+     004fh              ra
+     0054h              rb08
+     0055h              rc08
+     0052h              rd08
+     0053h              re08
+     0056h              rf08
+     0057h              rg08
 
      Address            Public by Value
+     0001h              _ADC_ISR
      001ch              _main_startup
+     0040h              _cntr
      0041h              _main
-     004bh              ra
-     004ch              r108
-     004dh              r208
-     004eh              rd08
-     004fh              re08
-     0050h              rb08
-     0051h              rc08
-     0052h              r110
-     0053h              r210
-     0054h              r118
-     0055h              r218
-     0056h              rc18
-     0057h              rb18
-     00b8h              _TB0_ISR
-     00edh              _Timer_ISR
-     00feh              _ADC_ISR
+     0041h              _lastper
+     0043h              _trig
+     0045h              _last_zc
+     0046h              _adc_avg
+     0048h              _adc_val
+     004ch              _i
+     004eh              _adc_ch1
+     004fh              ra
+     0050h              r108
+     0051h              r208
+     0052h              rd08
+     0053h              re08
+     0054h              rb08
+     0055h              rc08
+     0056h              rf08
+     0057h              rg08
+     0058h              r110
+     0059h              r210
+     005ah              r118
+     005bh              r218
+     00ach              _TB0_ISR
+     0112h              _Timer_ISR
 
 
 ROM Usage Statistics
      Size      Used     Percentage
-     0800h     0110h    13%
+     0800h     011dh    13%
 
 RAM Usage Statistics
     Bank      Size      Used     Percentage
-     00h       0060h     0018h    25%
-     Total     0060h     0018h    25%
+     00h       0060h     001ch    29%
+     Total     0060h     001ch    29%
 
 Use Stack Count
 _main: 0
@@ -113,6 +129,6 @@ Call Tree
     @dummy24
         _ADC_ISR (0)
 
-HLINK: Program entry point at section '@code' (address 0) of file 'G:\ALTIUM\q1\q1\Q1.OBJ'
+HLINK: Program entry point at section '@code' (address 0) of file 'C:\Users\992852\Desktop\EVC CODE\EVC Code-HT66 - Digital SUP -Complete\karamozi\my_project\q1\Q1.OBJ'
 
 Total 0 error(s), Total 0 Warning(s)
